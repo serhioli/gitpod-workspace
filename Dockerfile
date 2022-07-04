@@ -73,25 +73,25 @@ ENV LANG=ru_RU.UTF-8 \
 
 ### User ###
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
-RUN useradd -l -u 33333 -G sudo,docker -md /home/developer -s /bin/bash -p developer developer \
+RUN useradd -l -u 33333 -G sudo,docker -md /home/gitpod -s /bin/bash -p gitpod gitpod \
     # passwordless sudo for users in the 'sudo' group
     && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers \
     # To emulate the workspace-session behavior within dazzle build env
-    && mkdir /workspace && chown -hR developer:developer /workspace
+    && mkdir /workspace && chown -hR gitpod:gitpod /workspace
 
-ENV HOME=/home/developer
+ENV HOME=/home/gitpod
 WORKDIR $HOME
 
-USER developer
+USER gitpod
 # use sudo so that user does not get sudo usage info on (the first) login
-RUN sudo echo "Running 'sudo' for Developer: success" && \
+RUN sudo echo "Running 'sudo' for Gitpod: success" && \
     # create .bashrc.d folder and source it in the bashrc
-    mkdir -p /home/developer/.bashrc.d && \
-    (echo; echo "for i in \$(ls -A \$HOME/.bashrc.d/); do source \$HOME/.bashrc.d/\$i; done"; echo) >> /home/developer/.bashrc && \
-    # create a completions dir for developer user
-    mkdir -p /home/developer/.local/share/bash-completion/completions
+    mkdir -p /home/gitpod/.bashrc.d && \
+    (echo; echo "for i in \$(ls -A \$HOME/.bashrc.d/); do source \$HOME/.bashrc.d/\$i; done"; echo) >> /home/gitpod/.bashrc && \
+    # create a completions dir for gitpod user
+    mkdir -p /home/gitpod/.local/share/bash-completion/completions
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-COPY --from=composer:2 --chown=developer:developer /tmp/keys.dev.pub /tmp/keys.tags.pub $HOME/.composer/
+COPY --from=composer:2 --chown=gitpod:gitpod /tmp/keys.dev.pub /tmp/keys.tags.pub $HOME/.composer/
 # < Composer
