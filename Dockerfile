@@ -81,6 +81,8 @@ RUN useradd -l -u 33333 -G sudo,docker -md /home/gitpod -s /bin/bash -p gitpod g
 
 ENV HOME=/home/gitpod
 WORKDIR $HOME
+# custom Bash prompt
+RUN { echo && echo "PS1='\[\033[01;32m\]\u\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]\$(__git_ps1 \" (%s)\") $ '" ; } >> .bashrc
 
 USER gitpod
 # use sudo so that user does not get sudo usage info on (the first) login
