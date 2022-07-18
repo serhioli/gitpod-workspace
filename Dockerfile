@@ -16,12 +16,16 @@ RUN yes | unminimize \
     && install-packages \
         symfony-cli \
     # 4. Register ru lang locale
-    && locale-gen ru_RU.UTF-8 en_US.UTF-8
+    && locale-gen \
+        en_US.UTF-8 \
+        ru_RU.UTF-8
+
+RUN update-alternatives --set php $(which php8.1) \
+    && pecl channel-update pecl.php.net \
+    && pecl install \
+        xdebug \
+    && echo 'zend_extension=xdebug' > /etc/php/8.1/cli/conf.d/20-xdebug.ini
 
 USER gitpod
-
-ENV LANG=ru_RU.UTF-8 \
-    LANGUAGE=ru_RU:ru \
-    LC_ALL=ru_RU.UTF-8
 
 RUN brew update --force && brew upgrade && brew cleanup --prune=all
