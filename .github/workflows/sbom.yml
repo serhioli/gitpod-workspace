@@ -1,0 +1,14 @@
+name: "Create SBOM"
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: anchore/sbom-action@v0
+        with:
+          image: ghcr.io/${{ github.repository }}:latest
+          dependency-snapshot: true

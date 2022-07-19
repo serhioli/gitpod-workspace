@@ -1,13 +1,13 @@
-name: Release new image
+name: "Release new image"
 
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: "0 4 * * *"
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -45,8 +45,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - name: Collect SBOM
-        uses: anchore/sbom-action@v0
-        with:
-          image: ghcr.io/${{ github.repository }}:latest
-          dependency-snapshot: true
+  sbom:
+    needs: [build]
+    if: github.event_name != 'workflow_dispatch'
+    uses: ./.github/workflows/sbom.yml
