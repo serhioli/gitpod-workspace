@@ -46,7 +46,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Collect SBOM
-        uses: anchore/sbom-action@v0
-        with:
-          image: ghcr.io/${{ github.repository }}:latest
-          dependency-snapshot: true
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        uses: ./.github/workflows/sbom.yml
