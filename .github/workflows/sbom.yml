@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: read
-  packages: write
+  packages: read
 
 jobs:
   collect:
@@ -15,4 +15,6 @@ jobs:
       - uses: anchore/sbom-action@v0
         with:
           image: ghcr.io/${{ github.repository }}:latest
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ github.token }}
           dependency-snapshot: true
