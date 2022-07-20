@@ -7,7 +7,6 @@ on:
 jobs:
   collect:
     runs-on: ubuntu-22.04
-    permissions: read-all
     steps:
       - uses: anchore/sbom-action@v0
         with:
