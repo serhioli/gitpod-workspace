@@ -15,6 +15,6 @@ jobs:
       - uses: anchore/sbom-action@v0
         with:
           image: ghcr.io/${{ github.repository }}:latest
-          registry-username: ${{ github.actor }}
+          registry-username: ${{ github.repository_owner }}
           registry-password: ${{ github.token }}
           dependency-snapshot: true
